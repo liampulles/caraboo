@@ -1,0 +1,11 @@
+FROM golang:latest AS builder
+WORKDIR /src
+ENV CGO_ENABLED=0
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN go build -o /caraboo-proxy ./cmd/caraboo-proxy
+
+FROM scratch
+COPY --from=builder /caraboo-proxy .
+ENTRYPOINT [ "./caraboo-proxy" ]

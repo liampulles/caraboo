@@ -13,6 +13,10 @@ build:
 	go build ./...
 install: build
 	go install ./...
+docker-build-proxy:
+	docker build -f Dockerfile.caraboo-proxy .
+run-proxy: install
+	$(GOBIN)/caraboo-proxy
 inspect: build $(GOBIN)/golangci-lint
 	golangci-lint run
 update:
