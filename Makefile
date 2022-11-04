@@ -18,6 +18,7 @@ docker-build-proxy:
 run-proxy: install
 	$(GOBIN)/caraboo-proxy
 inspect: build $(GOBIN)/golangci-lint
+	go vet ./...
 	golangci-lint run
 update:
 	go get -u ./...
