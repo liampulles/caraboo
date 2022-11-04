@@ -1,10 +1,10 @@
 package wire
 
 import (
-	"fmt"
-
 	goConfig "github.com/liampulles/go-config"
-	"github.com/liampulles/juryrig/cmd/caraboo-proxy/driver/fiber"
+	"github.com/liampulles/juryrig/cmd/caraboo-proxy/internal/driver/fiber"
+	"github.com/liampulles/juryrig/cmd/caraboo-proxy/internal/usecase"
+	"github.com/rs/zerolog/log"
 )
 
 type App struct {
@@ -16,7 +16,9 @@ func (app *App) Run() error {
 }
 
 func Wire(cfg Config) *App {
-	httpserver := fiber.NewHTTPServer(cfg.Port)
+	svc := usecase.NewService()
+
+	httpserver := fiber.NewHTTPServer(cfg.Port, svc)
 
 	return &App{
 		httpserver: httpserver,
@@ -34,7 +36,8 @@ func LoadConfig(source goConfig.Source) (Config, error) {
 	if err := goConfig.LoadProperties(typedSource,
 		goConfig.IntProp("PORT", &cfg.Port, false),
 	); err != nil {
-		return Config{}, fmt.Errorf("could not fetch config: %w", err)
+		log.Err(err).Msg("could not load config")
+		return Config{}, err
 	}
 
 	return cfg, nil
