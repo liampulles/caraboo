@@ -16,7 +16,7 @@ func Run(cfg Config) error {
 		AppName:               "caraboo-proxy",
 		DisableStartupMessage: true,
 	})
-	store := store.NewStore()
+	store := store.NewInMemoryStore()
 	handler := NewHandler(cfg, store)
 
 	// Match any route

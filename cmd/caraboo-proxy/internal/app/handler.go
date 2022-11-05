@@ -13,12 +13,12 @@ import (
 
 type Handler struct {
 	cfg   Config
-	store *store.Store
+	store store.Store
 }
 
 func NewHandler(
 	cfg Config,
-	store *store.Store,
+	store *store.InMemoryStore,
 ) *Handler {
 	return &Handler{
 		cfg:   cfg,
