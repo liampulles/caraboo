@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"net/http"
 	"net/url"
 
@@ -33,7 +34,12 @@ func (h *Handler) handle(c *fiber.Ctx) error {
 	}
 
 	// Try forward the request
-	if err := proxy.Do(c, forwardURL); err != nil {
+	err = proxy.Do(c, forwardURL)
+	if err == nil && isFailStatus(c.Response().StatusCode()) {
+		err = errors.New("502: Bad Gateway")
+	}
+
+	if err != nil {
 		log.Debug().Str("err", err.Error()).Msg("proxy failed, using default")
 
 		// It didn't work - let's try and load a previous
@@ -50,4 +56,8 @@ func (h *Handler) handle(c *fiber.Ctx) error {
 	h.store.Set(c.Request(), c.Response())
 
 	return nil
+}
+
+func isFailStatus(status int) bool {
+	return status == 502
 }
