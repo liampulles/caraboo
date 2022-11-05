@@ -17,9 +17,7 @@ func Run(cfg Config) error {
 	})
 
 	// Match any route
-	app.Use(func(c *fiber.Ctx) error {
-		return c.Status(200).SendString("Hi there!")
-	})
+	app.Use(handler)
 
 	log.Info().Msgf("listening on port %d", cfg.Port)
 	if err := app.Listen(fmt.Sprintf(":%d", cfg.Port)); err != nil {
