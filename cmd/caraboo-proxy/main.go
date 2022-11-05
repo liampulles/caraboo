@@ -17,9 +17,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	app := wire.Wire(cfg)
-
-	if err := app.Run(); err != nil {
+	if err := wire.Run(cfg); err != nil {
 		os.Exit(2)
 	}
 }
