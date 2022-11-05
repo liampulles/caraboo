@@ -15,7 +15,7 @@ func Run(cfg Config) error {
 		AppName:               "caraboo-proxy",
 		DisableStartupMessage: true,
 	})
-	handler := NewHandler()
+	handler := NewHandler(cfg)
 
 	// Match any route
 	app.Use(handler.handle)

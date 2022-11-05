@@ -2,10 +2,14 @@ package app
 
 import "github.com/gofiber/fiber/v2"
 
-type Handler struct{}
+type Handler struct {
+	cfg Config
+}
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(cfg Config) *Handler {
+	return &Handler{
+		cfg: cfg,
+	}
 }
 
 func (h *Handler) handle(c *fiber.Ctx) error {
