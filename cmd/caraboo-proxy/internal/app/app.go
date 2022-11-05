@@ -15,9 +15,10 @@ func Run(cfg Config) error {
 		AppName:               "caraboo-proxy",
 		DisableStartupMessage: true,
 	})
+	handler := NewHandler()
 
 	// Match any route
-	app.Use(handler)
+	app.Use(handler.handle)
 
 	log.Info().Msgf("listening on port %d", cfg.Port)
 	if err := app.Listen(fmt.Sprintf(":%d", cfg.Port)); err != nil {
